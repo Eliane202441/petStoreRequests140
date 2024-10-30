@@ -1,0 +1,18 @@
+{
+    "id": 151174801,
+    "category": {
+      "id": 1,
+      "name": "dog"
+    },
+    "name": "Lilica",
+    "photoUrls": [
+      ""
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "vacinado"
+      }
+    ],
+    "status": "sold"
+  }
