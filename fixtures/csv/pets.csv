@@ -1,0 +1,5 @@
+pet_id,category_id,category_name,pet_name,tags,status
+151174802,2,cat,Lili,1-vacinado;2-vermifugado,available
+151174803,3,fish,Nemo,3-raro,available
+151174804,1,dog,Oggi,2-vermifugado,available
+151174805,4,bird,Garibaldo,3-raro,available

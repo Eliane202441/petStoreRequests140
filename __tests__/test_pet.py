@@ -4,6 +4,8 @@ import pytest          # engine / framework de teste de unidade
 import requests        # Framework de teste de API
 # 2-Classe é opcional no python em muitos casos
 
+from utils.utils import ler_csv        # não é uma biblioteca  (importa a função de leitor do csv)
+
 # 2.1 - Atributo ou variavel
 # vou usar os atributos para  consulta e resultado esperado
 pet_id = 151174801        # código do animal
@@ -88,11 +90,14 @@ def test_put_pet():
  assert response_body['tags'][0]['name'] == pet_tag_name
  assert response_body['status'] == 'sold'
 
+
 def test_delete_pet():
   response = requests.delete(
      url=f'{url}/{pet_id}',
     headers=headers,
   )
+
+
 
   response_body = response.json()
 
@@ -102,4 +107,44 @@ def test_delete_pet():
   assert response_body['message'] ==  str(pet_id)
 
   
-   
+@pytest.mark.parametrize('pet_id,category_id,category_name,pet_name,tags,status', ler_csv('./fixtures/csv/pets.csv'))  
+def test_post_pet_dinamico(pet_id, category_id, category_name, pet_name, tags, status):
+    pet = {}
+    pet['id'] = int(pet_id)
+    pet['category'] = {}
+    pet['category']['id'] = int(category_id)
+    pet['category']['name'] = category_name
+    pet['name'] = pet_name
+    pet['photoUrls'] = []
+    pet['photoUrls'].append('')
+    pet['tags'] = []
+
+    tags = tags.split(';')
+    for tag_info in tags:
+        tag = tag_info.split('-')
+        tag_formatada = {}
+        tag_formatada['id'] = int(tag[0])
+        tag_formatada['name'] = tag[1]
+        pet['tags'].append(tag_formatada)
+
+    pet['status'] = status
+    pet = json.dumps(pet, indent=4)
+    print('\n' + pet)
+
+    # Executar
+    response = requests.post(
+        url=url,
+        headers=headers,
+        data=pet,
+        timeout=5
+    )
+
+    # Compare
+    response_body = response.json()
+    assert response.status_code == 200
+    assert response_body['id'] == int(pet_id)
+    assert response_body['name'] == pet_name
+    assert response_body['status'] == status
+
+
+
