@@ -55,5 +55,5 @@ def test_delete_order():
 
     # Verifica se o pedido foi realmente excluído
     get_response = requests.get(url=f'{url_order}/{order_id}', headers=headers)
-    assert get_response.status_code == 404         # Pedido não deve mais existir
+    assert get_response.status_code == 404         # Pedido não deve mais existir 
 
